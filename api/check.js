@@ -3,50 +3,57 @@ const PACI_USER = "gis";
 const PACI_PASS = "9#7RnYCtJ$LL";
 
 module.exports = async function handler(req, res) {
+  // CORS - must be first
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
+  // Handle preflight immediately
   if (req.method === "OPTIONS") {
-    return res.status(200).end();
+    res.status(200).end();
+    return;
   }
 
   if (req.method !== "GET") {
-    return res.status(405).json({ error: "Method not allowed" });
+    res.status(405).json({ error: "Method not allowed" });
+    return;
   }
 
   try {
-    const { requestId } = req.query;
+    var requestId = req.query.requestId;
+
     if (!requestId) {
-      return res.status(400).json({ error: "requestId is required" });
+      res.status(400).json({ error: "requestId is required" });
+      return;
     }
 
     // Login
-    const loginRes = await fetch(PACI_BASE + "/paci/login", {
+    var loginRes = await fetch(PACI_BASE + "/paci/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username: PACI_USER, password: PACI_PASS }),
     });
-    const loginData = await loginRes.json();
+    var loginData = await loginRes.json();
 
     if (!loginData.accessToken) {
-      return res.status(500).json({ error: "PACI login failed" });
+      res.status(500).json({ error: "PACI login failed" });
+      return;
     }
 
     // Check status
-    const checkRes = await fetch(PACI_BASE + "/mobile-id/check/" + requestId, {
+    var checkRes = await fetch(PACI_BASE + "/mobile-id/check/" + requestId, {
       method: "GET",
       headers: { "Authorization": "Bearer " + loginData.accessToken },
     });
-    const checkData = await checkRes.json();
+    var checkData = await checkRes.json();
 
-    return res.status(200).json({
+    res.status(200).json({
       statusCode: checkData.statusCode,
       requestStatus: checkData.requestStatus,
       isUsed: checkData.isUsed,
     });
 
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message });
   }
 };
