@@ -3,13 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuwait  Finder</title>
+    <title>Kuwait Finder</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -31,10 +27,7 @@
             text-align: center;
         }
 
-        .logo {
-            font-size: 48px;
-            margin-bottom: 8px;
-        }
+        .logo { font-size: 48px; margin-bottom: 8px; }
 
         .app-title {
             font-size: 20px;
@@ -43,62 +36,105 @@
             margin-bottom: 20px;
         }
 
-        .parcel-label {
-            color: #888;
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
+        .parcel-label { color: #888; font-size: 13px; margin-bottom: 4px; }
 
         .parcel-number {
             font-size: 26px;
             font-weight: 700;
             color: #1a3c6e;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             letter-spacing: 2px;
             background: #f0f4ff;
             padding: 10px 20px;
             border-radius: 10px;
             display: inline-block;
         }
-        /* ── Input (shown when no parcel in URL) ── */
-        .input-section {
+
+        /* Checkbox toggle */
+        .auth-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f8f9ff;
+            border: 2px solid #e0e6ff;
+            border-radius: 12px;
+            padding: 14px 16px;
             margin-bottom: 20px;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            text-align: left;
         }
 
-            .input-section input {
-                width: 100%;
-                padding: 14px 16px;
-                font-size: 18px;
-                border: 2px solid #d0d7ff;
-                border-radius: 12px;
-                text-align: center;
-                letter-spacing: 2px;
-                outline: none;
-                transition: border-color 0.2s;
-            }
+        .auth-toggle:hover { border-color: #1a73e8; background: #f0f4ff; }
+        .auth-toggle.active { border-color: #1a3c6e; background: #eef2ff; }
 
-                .input-section input:focus {
-                    border-color: #1a73e8;
-                }
+        .auth-toggle input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #1a3c6e;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
 
-            .input-section button {
-                margin-top: 10px;
-                width: 100%;
-                padding: 14px;
-                background: #1a3c6e;
-                color: white;
-                border: none;
-                border-radius: 12px;
-                font-size: 15px;
-                font-weight: 600;
-                cursor: pointer;
-                transition: opacity 0.2s;
-            }
+        .auth-toggle .toggle-text { flex: 1; }
+        .auth-toggle .toggle-title { font-size: 14px; font-weight: 600; color: #1a3c6e; }
+        .auth-toggle .toggle-sub { font-size: 12px; color: #888; margin-top: 2px; }
 
-                .input-section button:hover {
-                    opacity: 0.88;
-                }
-        /* ── Link buttons ── */
+        /* Civil ID slide-down */
+        .civil-section {
+            margin-bottom: 20px;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.35s ease, opacity 0.3s ease;
+        }
+        .civil-section.visible { max-height: 200px; opacity: 1; }
+
+        .civil-section .field-label {
+            color: #555;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: left;
+            margin-bottom: 6px;
+        }
+
+        .civil-section input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 18px;
+            border: 2px solid #d0d7ff;
+            border-radius: 12px;
+            text-align: center;
+            letter-spacing: 3px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .civil-section input:focus { border-color: #1a73e8; }
+        .civil-section input.error { border-color: #e53935; background: #fff5f5; }
+
+        .civil-hint { color: #aaa; font-size: 11px; margin-top: 6px; text-align: center; }
+
+        .error-msg { color: #e53935; font-size: 12px; margin-top: 6px; text-align: left; display: none; }
+        .error-msg.visible { display: block; }
+
+        /* Main button */
+        .main-btn {
+            width: 100%;
+            padding: 15px;
+            background: #1a3c6e;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+            margin-bottom: 20px;
+        }
+        .main-btn:hover { opacity: 0.88; }
+        .main-btn:active { transform: scale(0.98); }
+
+        /* Link buttons */
         .btn {
             display: flex;
             align-items: center;
@@ -113,44 +149,14 @@
             transition: transform 0.15s, opacity 0.15s;
             cursor: pointer;
         }
-
-            .btn:hover {
-                transform: translateY(-2px);
-                opacity: 0.9;
-            }
-
-            .btn:active {
-                transform: translateY(0);
-                opacity: 0.8;
-            }
-
-            .btn .icon {
-                font-size: 22px;
-                min-width: 30px;
-                text-align: center;
-            }
-
-            .btn .label {
-                flex: 1;
-                text-align: left;
-            }
-
-            .btn .arrow {
-                font-size: 16px;
-                opacity: 0.6;
-            }
-
-            .btn.kuwait {
-                background: linear-gradient(135deg, #1a73e8, #1558b0);
-            }
-
-            .btn.paci {
-                background: linear-gradient(135deg, #2d6a4f, #1e4d38);
-            }
-
-            .btn.moi {
-                background: linear-gradient(135deg, #b5451b, #8c3414);
-            }
+        .btn:hover { transform: translateY(-2px); opacity: 0.9; }
+        .btn:active { transform: translateY(0); opacity: 0.8; }
+        .btn .icon { font-size: 22px; min-width: 30px; text-align: center; }
+        .btn .label { flex: 1; text-align: left; }
+        .btn .arrow { font-size: 16px; opacity: 0.6; }
+        .btn.kuwait { background: linear-gradient(135deg, #1a73e8, #1558b0); }
+        .btn.paci   { background: linear-gradient(135deg, #2d6a4f, #1e4d38); }
+        .btn.moi    { background: linear-gradient(135deg, #b5451b, #8c3414); }
 
         .divider {
             display: flex;
@@ -160,13 +166,7 @@
             color: #ccc;
             font-size: 12px;
         }
-
-            .divider::before, .divider::after {
-                content: '';
-                flex: 1;
-                height: 1px;
-                background: #eee;
-            }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #eee; }
 
         .warn {
             background: #fff3cd;
@@ -178,142 +178,282 @@
             margin-bottom: 16px;
         }
 
-        .footer {
-            margin-top: 24px;
-            color: #ccc;
-            font-size: 11px;
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 20px;
         }
+
+        /* No parcel in URL */
+        .input-section { margin-bottom: 20px; }
+        .input-section input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 18px;
+            border: 2px solid #d0d7ff;
+            border-radius: 12px;
+            text-align: center;
+            letter-spacing: 2px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .input-section input:focus { border-color: #1a73e8; }
+        .input-section button {
+            margin-top: 10px;
+            width: 100%;
+            padding: 14px;
+            background: #1a3c6e;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .input-section button:hover { opacity: 0.88; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in { animation: slideIn 0.3s ease forwards; }
+
+        .footer { margin-top: 24px; color: #ccc; font-size: 11px; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="logo">📦</div>
-        <div class="app-title">Kuwait Finder</div>
+<div class="card">
+    <div class="logo">📦</div>
+    <div class="app-title">Kuwait Finder</div>
 
-        <!-- Shown when NO parcel in URL -->
-        <div class="input-section" id="input-section" style="display:none;">
-            <div class="parcel-label">Enter your parcel number</div>
-            <input type="text" id="parcel-input" placeholder="e.g. 12345"
-                   maxlength="20" inputmode="numeric" />
-            <button onclick="submitParcel()">Open Links →</button>
-        </div>
-
-        <!-- Shown when parcel is known -->
-        <div id="main-section" style="display:none;">
-            <div class="parcel-label">Parcel Number</div>
-            <div class="parcel-number" id="parcel-display">—</div>
-            <div id="token-warning"></div>
-            <div id="links"></div>
-        </div>
-
-        <div class="footer">Kuwait Finder &copy; 2025</div>
+    <!-- No parcel in URL -->
+    <div class="input-section" id="input-section" style="display:none;">
+        <div class="parcel-label">Enter your parcel number</div>
+        <input type="text" id="parcel-input" placeholder="e.g. 12345"
+               maxlength="20" inputmode="numeric" />
+        <button onclick="submitParcel()">Continue →</button>
     </div>
 
-    <script>
-        // ── Fixed Tokens ──────────────────────────────────────────────
-        const TOKENS = {
-            'PACI123': ['PACI'],
-            'MOI456': ['MOI'],
-            'FULL789': ['PACI', 'MOI']
-        };
+    <!-- Gate: parcel + checkbox + optional civil ID -->
+    <div id="gate-section" style="display:none;">
+        <div class="parcel-label">Parcel Number</div>
+        <div class="parcel-number" id="parcel-display-gate">—</div>
 
-        // ── Link Definitions ──────────────────────────────────────────
-        const LINK_MAP = {
-            'KuwaitFinder': {
-                title: 'Kuwait Finder',
-                icon: '📍',
-                cls: 'kuwait',
-                url: (parcel) => `kuwaitfinder://?text=${encodeURIComponent(parcel)}`
-            },
-            'PACI': {
-                title: 'PACI Inquiry',
-                icon: '🏛️',
-                cls: 'paci',
-                url: (parcel) => `https://services.paci.gov.kw/card/inquiry?lang=en&serviceType=2&parcel=${encodeURIComponent(parcel)}`
-            },
-            'MOI': {
-                title: 'MOI',
-                icon: '🛡️',
-                cls: 'moi',
-                url: (parcel) => `https://www.moi.gov.kw/main?culture=en&parcel=${encodeURIComponent(parcel)}`
-            }
-        };
+        <!-- Checkbox -->
+        <label class="auth-toggle" id="auth-toggle">
+            <input type="checkbox" id="auth-checkbox" onchange="toggleAuth()" />
+            <div class="toggle-text">
+                <div class="toggle-title">🔐 Require Authentication</div>
+                <div class="toggle-sub">Enter your Civil ID to access more services</div>
+            </div>
+        </label>
 
-        // ── Read URL Params ───────────────────────────────────────────
-        const params = new URLSearchParams(window.location.search);
-        const parcel = params.get('parcel') || '';
-        const token = params.get('token') || '';
+        <!-- Civil ID (slides in when checked) -->
+        <div class="civil-section" id="civil-section">
+            <div class="field-label">Civil ID</div>
+            <input type="text" id="civil-input"
+                   placeholder="Enter your Civil ID"
+                   maxlength="12"
+                   inputmode="numeric"
+                   autocomplete="off" />
+            <div class="error-msg" id="civil-error">
+                ⚠️ Civil ID must be 12 digits and start with 1, 2, 3, or 4.
+            </div>
+            <div class="civil-hint">12-digit Kuwait Civil ID number</div>
+        </div>
 
-        // ── Decide which section to show on load ──────────────────────
-        if (parcel) {
-            showLinks(parcel);
-        } else {
-            document.getElementById('input-section').style.display = 'block';
-            // Auto-focus input on mobile
-            document.getElementById('parcel-input').focus();
+        <button class="main-btn" onclick="submitGate()">Open Links →</button>
+    </div>
+
+    <!-- Links -->
+    <div id="main-section" style="display:none;">
+        <div class="parcel-label">Parcel Number</div>
+        <div class="parcel-number" id="parcel-display">—</div>
+        <div id="verified-badge-wrap"></div>
+        <div id="token-warning"></div>
+        <div id="links"></div>
+    </div>
+
+    <div class="footer">Kuwait Finder &copy; 2025</div>
+</div>
+
+<script>
+    const TOKENS = {
+        'PACI123': ['PACI'],
+        'MOI456':  ['MOI'],
+        'FULL789': ['PACI', 'MOI']
+    };
+
+    const LINK_MAP = {
+        'KuwaitFinder': {
+            title: 'Kuwait Finder',
+            icon:  '📍',
+            cls:   'kuwait',
+            url:   (p) => `kuwaitfinder://?text=${encodeURIComponent(p)}`
+        },
+        'PACI': {
+            title: 'PACI Inquiry',
+            icon:  '🏛️',
+            cls:   'paci',
+            url:   (p) => `https://services.paci.gov.kw/card/inquiry?lang=en&serviceType=2&parcel=${encodeURIComponent(p)}`
+        },
+        'MOI': {
+            title: 'MOI',
+            icon:  '🛡️',
+            cls:   'moi',
+            url:   (p) => `https://www.moi.gov.kw/main?culture=en&parcel=${encodeURIComponent(p)}`
         }
+    };
 
-        // ── User typed parcel and pressed button ──────────────────────
-        function submitParcel() {
-            const val = document.getElementById('parcel-input').value.trim();
-            if (!val) {
-                document.getElementById('parcel-input').style.borderColor = '#e53935';
+    const params = new URLSearchParams(window.location.search);
+    const parcel = params.get('parcel') || '';
+    const token  = params.get('token')  || '';
+
+    function isValidCivilId(v) {
+        return /^[1234]\d{11}$/.test(v);
+    }
+
+    if (parcel) {
+        showGate(parcel);
+    } else {
+        document.getElementById('input-section').style.display = 'block';
+        document.getElementById('parcel-input').focus();
+    }
+
+    function submitParcel() {
+        const val = document.getElementById('parcel-input').value.trim();
+        if (!val) {
+            document.getElementById('parcel-input').style.borderColor = '#e53935';
+            return;
+        }
+        document.getElementById('input-section').style.display = 'none';
+        showGate(val);
+    }
+
+    document.getElementById('parcel-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') submitParcel();
+    });
+
+    function showGate(parcelValue) {
+        window._pendingParcel = parcelValue;
+        document.getElementById('parcel-display-gate').textContent = parcelValue;
+        const gate = document.getElementById('gate-section');
+        gate.style.display = 'block';
+        gate.classList.add('animate-in');
+    }
+
+    function toggleAuth() {
+        const cb      = document.getElementById('auth-checkbox');
+        const civil   = document.getElementById('civil-section');
+        const toggle  = document.getElementById('auth-toggle');
+        const checked = cb.checked;
+
+        civil.classList.toggle('visible', checked);
+        toggle.classList.toggle('active', checked);
+
+        if (checked) {
+            setTimeout(() => document.getElementById('civil-input').focus(), 150);
+        } else {
+            document.getElementById('civil-input').value = '';
+            document.getElementById('civil-input').classList.remove('error');
+            document.getElementById('civil-error').classList.remove('visible');
+        }
+    }
+
+    function submitGate() {
+        const checked   = document.getElementById('auth-checkbox').checked;
+        const parcelVal = window._pendingParcel;
+
+        if (checked) {
+            const civilVal = document.getElementById('civil-input').value.trim();
+            const input    = document.getElementById('civil-input');
+            const errorMsg = document.getElementById('civil-error');
+
+            if (!isValidCivilId(civilVal)) {
+                input.classList.add('error');
+                errorMsg.classList.add('visible');
+                input.focus();
                 return;
             }
-            document.getElementById('input-section').style.display = 'none';
-            showLinks(val);
+
+            input.classList.remove('error');
+            errorMsg.classList.remove('visible');
+            document.getElementById('gate-section').style.display = 'none';
+            showLinks(parcelVal, civilVal);
+        } else {
+            document.getElementById('gate-section').style.display = 'none';
+            showLinks(parcelVal, null);
+        }
+    }
+
+    document.getElementById('civil-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') submitGate();
+    });
+
+    document.getElementById('civil-input').addEventListener('input', function() {
+        this.classList.remove('error');
+        document.getElementById('civil-error').classList.remove('visible');
+    });
+
+    function showLinks(parcelValue, civilId) {
+        document.getElementById('parcel-display').textContent = parcelValue;
+
+        if (civilId) {
+            const masked = civilId.slice(0,3) + '•••••••' + civilId.slice(-2);
+            document.getElementById('verified-badge-wrap').innerHTML =
+                `<div class="verified-badge">✅ Civil ID ${masked} verified</div>`;
         }
 
-        // Allow pressing Enter in the input field
-        document.getElementById('parcel-input').addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') submitParcel();
+        const section = document.getElementById('main-section');
+        section.style.display = 'block';
+        section.classList.add('animate-in');
+
+        let toShow     = ['KuwaitFinder'];
+        let tokenValid = false;
+
+        if (civilId && token) {
+            if (TOKENS[token]) {
+                tokenValid = true;
+                toShow = toShow.concat(TOKENS[token]);
+            }
+            if (!tokenValid) {
+                document.getElementById('token-warning').innerHTML =
+                    `<div class="warn">⚠️ Invalid token. Showing default access only.</div>`;
+            }
+        }
+
+        const linksDiv = document.getElementById('links');
+        if (toShow.length > 1) {
+            linksDiv.innerHTML = `<div class="divider">open with</div>`;
+        }
+
+        toShow.forEach(key => {
+            const def = LINK_MAP[key];
+            if (!def) return;
+            const a = document.createElement('a');
+            a.href      = def.url(parcelValue);
+            a.className = `btn ${def.cls}`;
+            a.innerHTML = `
+                <span class="icon">${def.icon}</span>
+                <span class="label">${def.title}</span>
+                <span class="arrow">›</span>`;
+            if (key === 'KuwaitFinder') {
+                a.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = def.url(parcelValue);
+                });
+            }
+            linksDiv.appendChild(a);
         });
-
-        // ── Render links for a given parcel ──────────────────────────
-        function showLinks(parcelValue) {
-            document.getElementById('parcel-display').textContent = parcelValue;
-            document.getElementById('main-section').style.display = 'block';
-
-            // Resolve token → links
-            let toShow = ['KuwaitFinder'];
-            let tokenValid = false;
-
-            if (token) {
-                if (TOKENS[token]) {
-                    tokenValid = true;
-                    toShow = toShow.concat(TOKENS[token]);
-                }
-                // Invalid token warning
-                if (!tokenValid) {
-                    document.getElementById('token-warning').innerHTML =
-                        `<div class="warn">⚠️ Invalid token. Showing default access only.</div>`;
-                }
-            }
-
-            if (toShow.length > 1) {
-                document.getElementById('links').innerHTML =
-                    `<div class="divider">open with</div>`;
-            }
-
-            toShow.forEach(key => {
-                const def = LINK_MAP[key];
-                if (!def) return;
-                const a = document.createElement('a');
-                a.href = def.url(parcelValue);
-                a.className = `btn ${def.cls}`;
-                a.innerHTML = `
-                    <span class="icon">${def.icon}</span>
-                    <span class="label">${def.title}</span>
-                    <span class="arrow">›</span>`;
-                if (key === 'KuwaitFinder') {
-                    a.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        window.location.href = def.url(parcelValue);
-                    });
-                }
-                document.getElementById('links').appendChild(a);
-            });
-        }
-    </script>
+    }
+</script>
 </body>
 </html>
