@@ -1,30 +1,19 @@
-// api/notify.js
-// Vercel Serverless Function — sends PACI Mobile ID push notification
-
-const PACI_BASE     = "https://pcdapi.paci.kw:443/test";
-const PACI_USERNAME = "gis";
-const PACI_PASSWORD = "9#7RnYCtJ$LL";
-
-async function paciLogin() {
-  const res = await fetch(`${PACI_BASE}/paci/login`, {
-    method:  "POST",
-    headers: { "Content-Type": "application/json" },
-    body:    JSON.stringify({ username: PACI_USERNAME, password: PACI_PASSWORD }),
-  });
-  if (!res.ok) throw new Error(`PACI login failed: ${res.status}`);
-  const data = await res.json();
-  if (!data.accessToken) throw new Error("No access token from PACI");
-  return data.accessToken;
-}
-
 export default async function handler(req, res) {
-  // CORS headers
-  res.setHeader("Access-Control-Allow-Origin",  "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "*");
 
-  if (req.method === "OPTIONS") return res.status(204).end();
-  if (req.method !== "POST")   return res.status(405).json({ error: "Method not allowed" });
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  const PACI_BASE     = "https://pcdapi.paci.kw:443/test";
+  const PACI_USERNAME = "gis";
+  const PACI_PASSWORD = "9#7RnYCtJ$LL";
 
   try {
     const { civilId, parcel } = req.body;
@@ -37,24 +26,34 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Invalid Civil ID format" });
     }
 
-    // 1. Login to PACI
-    const accessToken = await paciLogin();
+    // Step 1: Login
+    const loginRes = await fetch(PACI_BASE + "/paci/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: PACI_USERNAME, password: PACI_PASSWORD }),
+    });
 
-    // 2. Send push notification
-    const notifyRes = await fetch(`${PACI_BASE}/mobile-id/call`, {
-      method:  "POST",
+    const loginData = await loginRes.json();
+
+    if (!loginData.accessToken) {
+      return res.status(500).json({ error: "PACI login failed", detail: loginData });
+    }
+
+    // Step 2: Send push notification
+    const notifyRes = await fetch(PACI_BASE + "/mobile-id/call", {
+      method: "POST",
       headers: {
-        "Content-Type":  "application/json",
-        "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + loginData.accessToken,
       },
       body: JSON.stringify({
         civilId:                civilId,
-        requestType:            1,        // 1 = Push Notification
-        assuranceLevel:         20,       // 20 = Medium
+        requestType:            1,
+        assuranceLevel:         20,
         subjectEn:              "Kuwait Finder - Parcel Access",
         subjectAr:              "كويت فايندر - الوصول للقطعة",
-        messageEn:              `Approve access to parcel ${parcel}`,
-        messageAr:              `الموافقة على الوصول للقطعة ${parcel}`,
+        messageEn:              "Approve access to parcel " + parcel,
+        messageAr:              "الموافقة على الوصول للقطعة " + parcel,
         authenticationReasonEn: "Parcel ownership verification",
         authenticationReasonAr: "التحقق من ملكية القطعة",
         requestUserDetails:     true,
