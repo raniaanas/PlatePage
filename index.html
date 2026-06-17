@@ -64,18 +64,13 @@
             transition: border-color 0.2s, background 0.2s;
             text-align: left;
         }
-
         .auth-toggle:hover { border-color: #1a73e8; background: #f0f4ff; }
         .auth-toggle.active { border-color: #1a3c6e; background: #eef2ff; }
-
         .auth-toggle input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
+            width: 20px; height: 20px;
             accent-color: #1a3c6e;
-            cursor: pointer;
-            flex-shrink: 0;
+            cursor: pointer; flex-shrink: 0;
         }
-
         .auth-toggle .toggle-text { flex: 1; }
         .auth-toggle .toggle-title { font-size: 14px; font-weight: 600; color: #1a3c6e; }
         .auth-toggle .toggle-sub { font-size: 12px; color: #888; margin-top: 2px; }
@@ -88,30 +83,20 @@
             opacity: 0;
             transition: max-height 0.35s ease, opacity 0.3s ease;
         }
-        .civil-section.visible { max-height: 200px; opacity: 1; }
+        .civil-section.visible { max-height: 160px; opacity: 1; }
 
         .civil-section .field-label {
-            color: #555;
-            font-size: 13px;
-            font-weight: 600;
-            text-align: left;
-            margin-bottom: 6px;
+            color: #555; font-size: 13px; font-weight: 600;
+            text-align: left; margin-bottom: 6px;
         }
-
         .civil-section input {
-            width: 100%;
-            padding: 14px 16px;
-            font-size: 18px;
-            border: 2px solid #d0d7ff;
-            border-radius: 12px;
-            text-align: center;
-            letter-spacing: 3px;
-            outline: none;
+            width: 100%; padding: 14px 16px; font-size: 18px;
+            border: 2px solid #d0d7ff; border-radius: 12px;
+            text-align: center; letter-spacing: 3px; outline: none;
             transition: border-color 0.2s;
         }
         .civil-section input:focus { border-color: #1a73e8; }
         .civil-section input.error { border-color: #e53935; background: #fff5f5; }
-
         .civil-hint { color: #aaa; font-size: 11px; margin-top: 6px; text-align: center; }
 
         .error-msg { color: #e53935; font-size: 12px; margin-top: 6px; text-align: left; display: none; }
@@ -119,35 +104,49 @@
 
         /* Main button */
         .main-btn {
-            width: 100%;
-            padding: 15px;
-            background: #1a3c6e;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
+            width: 100%; padding: 15px;
+            background: #1a3c6e; color: white;
+            border: none; border-radius: 12px;
+            font-size: 15px; font-weight: 600; cursor: pointer;
             transition: opacity 0.2s, transform 0.1s;
             margin-bottom: 20px;
         }
         .main-btn:hover { opacity: 0.88; }
         .main-btn:active { transform: scale(0.98); }
+        .main-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Waiting / status box */
+        .status-box {
+            background: #f0f4ff;
+            border: 2px solid #c7d7ff;
+            border-radius: 14px;
+            padding: 20px 16px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .status-box.visible { display: block; }
+        .status-icon { font-size: 36px; margin-bottom: 10px; }
+        .status-title { font-size: 15px; font-weight: 700; color: #1a3c6e; margin-bottom: 6px; }
+        .status-sub { font-size: 13px; color: #666; line-height: 1.5; }
+
+        /* Spinner */
+        .spinner {
+            width: 28px; height: 28px;
+            border: 3px solid #d0d7ff;
+            border-top-color: #1a3c6e;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 10px auto 0;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         /* Link buttons */
         .btn {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 16px 20px;
-            border-radius: 14px;
-            margin-bottom: 14px;
-            font-weight: 600;
-            font-size: 15px;
-            text-decoration: none;
-            color: white;
-            transition: transform 0.15s, opacity 0.15s;
-            cursor: pointer;
+            display: flex; align-items: center; gap: 14px;
+            padding: 16px 20px; border-radius: 14px;
+            margin-bottom: 14px; font-weight: 600; font-size: 15px;
+            text-decoration: none; color: white;
+            transition: transform 0.15s, opacity 0.15s; cursor: pointer;
         }
         .btn:hover { transform: translateY(-2px); opacity: 0.9; }
         .btn:active { transform: translateY(0); opacity: 0.8; }
@@ -159,64 +158,38 @@
         .btn.moi    { background: linear-gradient(135deg, #b5451b, #8c3414); }
 
         .divider {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 4px 0 18px;
-            color: #ccc;
-            font-size: 12px;
+            display: flex; align-items: center; gap: 10px;
+            margin: 4px 0 18px; color: #ccc; font-size: 12px;
         }
         .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #eee; }
 
         .warn {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            border-radius: 10px;
-            padding: 12px 16px;
-            color: #856404;
-            font-size: 13px;
-            margin-bottom: 16px;
+            background: #fff3cd; border: 1px solid #ffc107;
+            border-radius: 10px; padding: 12px 16px;
+            color: #856404; font-size: 13px; margin-bottom: 16px;
         }
 
         .verified-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #e8f5e9;
-            color: #2e7d32;
-            font-size: 12px;
-            font-weight: 600;
-            padding: 5px 12px;
-            border-radius: 20px;
-            margin-bottom: 20px;
+            display: inline-flex; align-items: center; gap: 6px;
+            background: #e8f5e9; color: #2e7d32;
+            font-size: 12px; font-weight: 600;
+            padding: 5px 12px; border-radius: 20px; margin-bottom: 20px;
         }
 
         /* No parcel in URL */
         .input-section { margin-bottom: 20px; }
         .input-section input {
-            width: 100%;
-            padding: 14px 16px;
-            font-size: 18px;
-            border: 2px solid #d0d7ff;
-            border-radius: 12px;
-            text-align: center;
-            letter-spacing: 2px;
-            outline: none;
+            width: 100%; padding: 14px 16px; font-size: 18px;
+            border: 2px solid #d0d7ff; border-radius: 12px;
+            text-align: center; letter-spacing: 2px; outline: none;
             transition: border-color 0.2s;
         }
         .input-section input:focus { border-color: #1a73e8; }
         .input-section button {
-            margin-top: 10px;
-            width: 100%;
-            padding: 14px;
-            background: #1a3c6e;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.2s;
+            margin-top: 10px; width: 100%; padding: 14px;
+            background: #1a3c6e; color: white; border: none;
+            border-radius: 12px; font-size: 15px; font-weight: 600;
+            cursor: pointer; transition: opacity 0.2s;
         }
         .input-section button:hover { opacity: 0.88; }
 
@@ -247,38 +220,43 @@
         <div class="parcel-label">Parcel Number</div>
         <div class="parcel-number" id="parcel-display-gate">—</div>
 
-        <!-- Checkbox -->
         <label class="auth-toggle" id="auth-toggle">
             <input type="checkbox" id="auth-checkbox" onchange="toggleAuth()" />
             <div class="toggle-text">
                 <div class="toggle-title">🔐 Require Authentication</div>
-                <div class="toggle-sub">Enter your Civil ID to access more services</div>
+                <div class="toggle-sub">Verify via Kuwait Mobile ID notification</div>
             </div>
         </label>
 
-        <!-- Civil ID (slides in when checked) -->
         <div class="civil-section" id="civil-section">
             <div class="field-label">Civil ID</div>
             <input type="text" id="civil-input"
                    placeholder="Enter your Civil ID"
-                   maxlength="12"
-                   inputmode="numeric"
-                   autocomplete="off" />
+                   maxlength="12" inputmode="numeric" autocomplete="off" />
             <div class="error-msg" id="civil-error">
                 ⚠️ Civil ID must be 12 digits and start with 1, 2, 3, or 4.
             </div>
             <div class="civil-hint">12-digit Kuwait Civil ID number</div>
         </div>
 
-        <button class="main-btn" onclick="submitGate()">Open Links →</button>
+        <button class="main-btn" id="open-btn" onclick="submitGate()">Open Links →</button>
     </div>
 
-    <!-- Links -->
+    <!-- Waiting for Mobile ID approval -->
+    <div class="status-box" id="status-box">
+        <div class="status-icon" id="status-icon">📱</div>
+        <div class="status-title" id="status-title">Notification Sent</div>
+        <div class="status-sub" id="status-sub">
+            Please open your <strong>Kuwait Mobile ID</strong> app and approve the request.
+        </div>
+        <div class="spinner" id="spinner"></div>
+    </div>
+
+    <!-- Links result -->
     <div id="main-section" style="display:none;">
         <div class="parcel-label">Parcel Number</div>
         <div class="parcel-number" id="parcel-display">—</div>
         <div id="verified-badge-wrap"></div>
-        <div id="token-warning"></div>
         <div id="links"></div>
     </div>
 
@@ -286,167 +264,250 @@
 </div>
 
 <script>
-    const TOKENS = {
-        'PACI123': ['PACI'],
-        'MOI456':  ['MOI'],
-        'FULL789': ['PACI', 'MOI']
-    };
+    // ── IMPORTANT: Replace this with your Cloudflare Worker URL after deploying ──
+    const WORKER_URL = "https://kuwait-finder.YOUR-SUBDOMAIN.workers.dev";
 
     const LINK_MAP = {
-        'KuwaitFinder': {
-            title: 'Kuwait Finder',
-            icon:  '📍',
-            cls:   'kuwait',
-            url:   (p) => `kuwaitfinder://?text=${encodeURIComponent(p)}`
+        KuwaitFinder: {
+            title: "Kuwait Finder", icon: "📍", cls: "kuwait",
+            url: (p) => `kuwaitfinder://?text=${encodeURIComponent(p)}`
         },
-        'PACI': {
-            title: 'PACI Inquiry',
-            icon:  '🏛️',
-            cls:   'paci',
-            url:   (p) => `https://services.paci.gov.kw/card/inquiry?lang=en&serviceType=2&parcel=${encodeURIComponent(p)}`
+        PACI: {
+            title: "PACI Inquiry", icon: "🏛️", cls: "paci",
+            url: (p) => `https://services.paci.gov.kw/card/inquiry?lang=en&serviceType=2&parcel=${encodeURIComponent(p)}`
         },
-        'MOI': {
-            title: 'MOI',
-            icon:  '🛡️',
-            cls:   'moi',
-            url:   (p) => `https://www.moi.gov.kw/main?culture=en&parcel=${encodeURIComponent(p)}`
+        MOI: {
+            title: "MOI", icon: "🛡️", cls: "moi",
+            url: (p) => `https://www.moi.gov.kw/main?culture=en&parcel=${encodeURIComponent(p)}`
         }
     };
 
     const params = new URLSearchParams(window.location.search);
-    const parcel = params.get('parcel') || '';
-    const token  = params.get('token')  || '';
+    const parcel = params.get("parcel") || "";
+    let   pollTimer = null;
 
-    function isValidCivilId(v) {
-        return /^[1234]\d{11}$/.test(v);
-    }
+    function isValidCivilId(v) { return /^[1234]\d{11}$/.test(v); }
 
+    // Init
     if (parcel) {
         showGate(parcel);
     } else {
-        document.getElementById('input-section').style.display = 'block';
-        document.getElementById('parcel-input').focus();
+        document.getElementById("input-section").style.display = "block";
+        document.getElementById("parcel-input").focus();
     }
 
     function submitParcel() {
-        const val = document.getElementById('parcel-input').value.trim();
-        if (!val) {
-            document.getElementById('parcel-input').style.borderColor = '#e53935';
-            return;
-        }
-        document.getElementById('input-section').style.display = 'none';
+        const val = document.getElementById("parcel-input").value.trim();
+        if (!val) { document.getElementById("parcel-input").style.borderColor = "#e53935"; return; }
+        document.getElementById("input-section").style.display = "none";
         showGate(val);
     }
 
-    document.getElementById('parcel-input').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') submitParcel();
+    document.getElementById("parcel-input").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") submitParcel();
     });
 
     function showGate(parcelValue) {
         window._pendingParcel = parcelValue;
-        document.getElementById('parcel-display-gate').textContent = parcelValue;
-        const gate = document.getElementById('gate-section');
-        gate.style.display = 'block';
-        gate.classList.add('animate-in');
+        document.getElementById("parcel-display-gate").textContent = parcelValue;
+        const gate = document.getElementById("gate-section");
+        gate.style.display = "block";
+        gate.classList.add("animate-in");
     }
 
     function toggleAuth() {
-        const cb      = document.getElementById('auth-checkbox');
-        const civil   = document.getElementById('civil-section');
-        const toggle  = document.getElementById('auth-toggle');
+        const cb      = document.getElementById("auth-checkbox");
+        const civil   = document.getElementById("civil-section");
+        const toggle  = document.getElementById("auth-toggle");
         const checked = cb.checked;
 
-        civil.classList.toggle('visible', checked);
-        toggle.classList.toggle('active', checked);
+        civil.classList.toggle("visible", checked);
+        toggle.classList.toggle("active", checked);
 
         if (checked) {
-            setTimeout(() => document.getElementById('civil-input').focus(), 150);
+            setTimeout(() => document.getElementById("civil-input").focus(), 150);
         } else {
-            document.getElementById('civil-input').value = '';
-            document.getElementById('civil-input').classList.remove('error');
-            document.getElementById('civil-error').classList.remove('visible');
+            document.getElementById("civil-input").value = "";
+            document.getElementById("civil-input").classList.remove("error");
+            document.getElementById("civil-error").classList.remove("visible");
         }
     }
 
-    function submitGate() {
-        const checked   = document.getElementById('auth-checkbox').checked;
-        const parcelVal = window._pendingParcel;
+    document.getElementById("civil-input").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") submitGate();
+    });
 
-        if (checked) {
-            const civilVal = document.getElementById('civil-input').value.trim();
-            const input    = document.getElementById('civil-input');
-            const errorMsg = document.getElementById('civil-error');
+    document.getElementById("civil-input").addEventListener("input", function () {
+        this.classList.remove("error");
+        document.getElementById("civil-error").classList.remove("visible");
+    });
 
-            if (!isValidCivilId(civilVal)) {
-                input.classList.add('error');
-                errorMsg.classList.add('visible');
-                input.focus();
+    async function submitGate() {
+        const checked    = document.getElementById("auth-checkbox").checked;
+        const parcelVal  = window._pendingParcel;
+
+        if (!checked) {
+            // No auth — go straight to Kuwait Finder only
+            document.getElementById("gate-section").style.display = "none";
+            showLinks(parcelVal, null, ["KuwaitFinder"]);
+            return;
+        }
+
+        // Validate Civil ID
+        const civilVal = document.getElementById("civil-input").value.trim();
+        const input    = document.getElementById("civil-input");
+        const errorMsg = document.getElementById("civil-error");
+
+        if (!isValidCivilId(civilVal)) {
+            input.classList.add("error");
+            errorMsg.classList.add("visible");
+            input.focus();
+            return;
+        }
+
+        input.classList.remove("error");
+        errorMsg.classList.remove("visible");
+
+        // Disable button, show loading
+        const btn = document.getElementById("open-btn");
+        btn.disabled    = true;
+        btn.textContent = "Sending notification…";
+
+        try {
+            // Call Worker → sends push notification
+            const res = await fetch(`${WORKER_URL}/auth/notify`, {
+                method:  "POST",
+                headers: { "Content-Type": "application/json" },
+                body:    JSON.stringify({ civilId: civilVal, parcel: parcelVal }),
+            });
+
+            const data = await res.json();
+
+            if (!data.success) {
+                showError(data.error || "Failed to send notification. Please try again.");
+                btn.disabled    = false;
+                btn.textContent = "Open Links →";
                 return;
             }
 
-            input.classList.remove('error');
-            errorMsg.classList.remove('visible');
-            document.getElementById('gate-section').style.display = 'none';
-            showLinks(parcelVal, civilVal);
-        } else {
-            document.getElementById('gate-section').style.display = 'none';
-            showLinks(parcelVal, null);
+            // Hide gate, show waiting screen
+            document.getElementById("gate-section").style.display = "none";
+            showWaiting();
+
+            // Start polling for approval
+            startPolling(data.requestId, parcelVal, civilVal);
+
+        } catch (err) {
+            showError("Network error. Please check your connection and try again.");
+            btn.disabled    = false;
+            btn.textContent = "Open Links →";
         }
     }
 
-    document.getElementById('civil-input').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') submitGate();
-    });
+    function showWaiting() {
+        const box = document.getElementById("status-box");
+        box.classList.add("visible");
+        box.classList.add("animate-in");
+    }
 
-    document.getElementById('civil-input').addEventListener('input', function() {
-        this.classList.remove('error');
-        document.getElementById('civil-error').classList.remove('visible');
-    });
+    function startPolling(requestId, parcelVal, civilVal) {
+        let attempts = 0;
+        const maxAttempts = 30; // 30 × 3s = 90 seconds timeout
 
-    function showLinks(parcelValue, civilId) {
-        document.getElementById('parcel-display').textContent = parcelValue;
+        pollTimer = setInterval(async () => {
+            attempts++;
 
-        if (civilId) {
-            const masked = civilId.slice(0,3) + '•••••••' + civilId.slice(-2);
-            document.getElementById('verified-badge-wrap').innerHTML =
+            if (attempts > maxAttempts) {
+                clearInterval(pollTimer);
+                setStatusTimeout();
+                return;
+            }
+
+            try {
+                const res  = await fetch(`${WORKER_URL}/auth/check?requestId=${requestId}`);
+                const data = await res.json();
+
+                // statusCode 900 = success response from API
+                if (data.statusCode === 900) {
+                    const status = (data.requestStatus || "").toLowerCase();
+
+                    if (status === "approved" || status === "success" || data.isUsed) {
+                        clearInterval(pollTimer);
+                        setStatusApproved();
+                        setTimeout(() => {
+                            document.getElementById("status-box").classList.remove("visible");
+                            showLinks(parcelVal, civilVal, ["KuwaitFinder", "PACI", "MOI"]);
+                        }, 1200);
+                    } else if (status === "rejected" || status === "denied" || status === "cancelled") {
+                        clearInterval(pollTimer);
+                        setStatusRejected();
+                    }
+                    // else still pending — keep polling
+                }
+            } catch (err) {
+                // Network blip — keep trying
+            }
+        }, 3000); // poll every 3 seconds
+    }
+
+    function setStatusApproved() {
+        document.getElementById("status-icon").textContent  = "✅";
+        document.getElementById("status-title").textContent = "Approved!";
+        document.getElementById("status-sub").textContent   = "Identity verified. Loading your links…";
+        document.getElementById("spinner").style.display    = "none";
+    }
+
+    function setStatusRejected() {
+        document.getElementById("status-icon").textContent  = "❌";
+        document.getElementById("status-title").textContent = "Request Rejected";
+        document.getElementById("status-sub").innerHTML     =
+            "You rejected the Mobile ID request.<br><a href='javascript:location.reload()' style='color:#1a3c6e;font-weight:600;'>Try again</a>";
+        document.getElementById("spinner").style.display    = "none";
+    }
+
+    function setStatusTimeout() {
+        document.getElementById("status-icon").textContent  = "⏱️";
+        document.getElementById("status-title").textContent = "Request Timed Out";
+        document.getElementById("status-sub").innerHTML     =
+            "No response received within 90 seconds.<br><a href='javascript:location.reload()' style='color:#1a3c6e;font-weight:600;'>Try again</a>";
+        document.getElementById("spinner").style.display    = "none";
+    }
+
+    function showError(message) {
+        document.getElementById("status-box").classList.remove("visible");
+        alert("⚠️ " + message);
+    }
+
+    function showLinks(parcelValue, civilVal, linksToShow) {
+        document.getElementById("parcel-display").textContent = parcelValue;
+
+        if (civilVal) {
+            const masked = civilVal.slice(0,3) + "•••••••" + civilVal.slice(-2);
+            document.getElementById("verified-badge-wrap").innerHTML =
                 `<div class="verified-badge">✅ Civil ID ${masked} verified</div>`;
         }
 
-        const section = document.getElementById('main-section');
-        section.style.display = 'block';
-        section.classList.add('animate-in');
+        const section = document.getElementById("main-section");
+        section.style.display = "block";
+        section.classList.add("animate-in");
 
-        let toShow     = ['KuwaitFinder'];
-        let tokenValid = false;
-
-        if (civilId && token) {
-            if (TOKENS[token]) {
-                tokenValid = true;
-                toShow = toShow.concat(TOKENS[token]);
-            }
-            if (!tokenValid) {
-                document.getElementById('token-warning').innerHTML =
-                    `<div class="warn">⚠️ Invalid token. Showing default access only.</div>`;
-            }
-        }
-
-        const linksDiv = document.getElementById('links');
-        if (toShow.length > 1) {
+        const linksDiv = document.getElementById("links");
+        if (linksToShow.length > 1) {
             linksDiv.innerHTML = `<div class="divider">open with</div>`;
         }
 
-        toShow.forEach(key => {
+        linksToShow.forEach(key => {
             const def = LINK_MAP[key];
             if (!def) return;
-            const a = document.createElement('a');
+            const a = document.createElement("a");
             a.href      = def.url(parcelValue);
             a.className = `btn ${def.cls}`;
             a.innerHTML = `
                 <span class="icon">${def.icon}</span>
                 <span class="label">${def.title}</span>
                 <span class="arrow">›</span>`;
-            if (key === 'KuwaitFinder') {
-                a.addEventListener('click', function(e) {
+            if (key === "KuwaitFinder") {
+                a.addEventListener("click", (e) => {
                     e.preventDefault();
                     window.location.href = def.url(parcelValue);
                 });
