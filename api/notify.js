@@ -3,39 +3,47 @@ const PACI_USER = "gis";
 const PACI_PASS = "9#7RnYCtJ$LL";
 
 module.exports = async function handler(req, res) {
+  // CORS - must be first before anything else
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
+  // Handle preflight immediately
   if (req.method === "OPTIONS") {
-    return res.status(200).end();
+    res.status(200).end();
+    return;
   }
 
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    res.status(405).json({ error: "Method not allowed" });
+    return;
   }
 
   try {
-    const { civilId, parcel } = req.body;
+    var body = req.body;
+    var civilId = body.civilId;
+    var parcel = body.parcel;
 
     if (!civilId || !parcel) {
-      return res.status(400).json({ error: "civilId and parcel are required" });
+      res.status(400).json({ error: "civilId and parcel are required" });
+      return;
     }
 
-    // Step 1: Login to PACI
-    const loginRes = await fetch(PACI_BASE + "/paci/login", {
+    // Login to PACI
+    var loginRes = await fetch(PACI_BASE + "/paci/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username: PACI_USER, password: PACI_PASS }),
     });
-    const loginData = await loginRes.json();
+    var loginData = await loginRes.json();
 
     if (!loginData.accessToken) {
-      return res.status(500).json({ error: "PACI login failed", detail: loginData });
+      res.status(500).json({ error: "PACI login failed", detail: loginData });
+      return;
     }
 
-    // Step 2: Send push notification
-    const notifyRes = await fetch(PACI_BASE + "/mobile-id/call", {
+    // Send push notification
+    var notifyRes = await fetch(PACI_BASE + "/mobile-id/call", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -56,22 +64,23 @@ module.exports = async function handler(req, res) {
         userDetail: [0],
       }),
     });
-    const notifyData = await notifyRes.json();
+    var notifyData = await notifyRes.json();
 
     if (notifyData.statusCode !== 900) {
-      return res.status(400).json({
+      res.status(400).json({
         error: "PACI notification failed",
         statusCode: notifyData.statusCode,
         errorCode: notifyData.errorCode,
       });
+      return;
     }
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       requestId: notifyData.requestId,
     });
 
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message });
   }
 };
