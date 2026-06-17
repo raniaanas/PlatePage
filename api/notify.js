@@ -1,55 +1,94 @@
-const PACI_BASE = "https://pcdapi.paci.kw:443/test";
+const https = require("https");
+
+const PACI_BASE_HOST = "pcdapi.paci.kw";
+const PACI_BASE_PATH = "/test";
 const PACI_USER = "gis";
 const PACI_PASS = "9#7RnYCtJ$LL";
 
+function httpsPost(host, path, data, token) {
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify(data);
+    const headers = {
+      "Content-Type": "application/json",
+      "Content-Length": Buffer.byteLength(body),
+    };
+    if (token) headers["Authorization"] = "Bearer " + token;
+
+    const req = https.request({
+      hostname: host,
+      port: 443,
+      path: path,
+      method: "POST",
+      headers: headers,
+      rejectUnauthorized: false,
+    }, (res) => {
+      let raw = "";
+      res.on("data", (chunk) => raw += chunk);
+      res.on("end", () => {
+        try { resolve(JSON.parse(raw)); }
+        catch (e) { reject(new Error("Bad JSON: " + raw)); }
+      });
+    });
+    req.on("error", reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+function httpsGet(host, path, token) {
+  return new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: host,
+      port: 443,
+      path: path,
+      method: "GET",
+      headers: { "Authorization": "Bearer " + token },
+      rejectUnauthorized: false,
+    }, (res) => {
+      let raw = "";
+      res.on("data", (chunk) => raw += chunk);
+      res.on("end", () => {
+        try { resolve(JSON.parse(raw)); }
+        catch (e) { reject(new Error("Bad JSON: " + raw)); }
+      });
+    });
+    req.on("error", reject);
+    req.end();
+  });
+}
+
 module.exports = async function handler(req, res) {
-  // CORS - must be first before anything else
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  // Handle preflight immediately
-  if (req.method === "OPTIONS") {
-    res.status(200).end();
-    return;
-  }
-
-  if (req.method !== "POST") {
-    res.status(405).json({ error: "Method not allowed" });
-    return;
-  }
+  if (req.method === "OPTIONS") { res.status(200).end(); return; }
+  if (req.method !== "POST") { res.status(405).json({ error: "Method not allowed" }); return; }
 
   try {
-    var body = req.body;
-    var civilId = body.civilId;
-    var parcel = body.parcel;
+    const { civilId, parcel } = req.body;
 
     if (!civilId || !parcel) {
       res.status(400).json({ error: "civilId and parcel are required" });
       return;
     }
 
-    // Login to PACI
-    var loginRes = await fetch(PACI_BASE + "/paci/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: PACI_USER, password: PACI_PASS }),
+    // Step 1: Login
+    const loginData = await httpsPost(PACI_BASE_HOST, PACI_BASE_PATH + "/paci/login", {
+      username: PACI_USER,
+      password: PACI_PASS,
     });
-    var loginData = await loginRes.json();
 
     if (!loginData.accessToken) {
       res.status(500).json({ error: "PACI login failed", detail: loginData });
       return;
     }
 
-    // Send push notification
-    var notifyRes = await fetch(PACI_BASE + "/mobile-id/call", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + loginData.accessToken,
-      },
-      body: JSON.stringify({
+    // Step 2: Send push notification
+    const notifyData = await httpsPost(
+      PACI_BASE_HOST,
+      PACI_BASE_PATH + "/mobile-id/call",
+      {
         civilId: civilId,
         requestType: 1,
         assuranceLevel: 20,
@@ -62,9 +101,9 @@ module.exports = async function handler(req, res) {
         requestUserDetails: true,
         returnedUserDetails: [1],
         userDetail: [0],
-      }),
-    });
-    var notifyData = await notifyRes.json();
+      },
+      loginData.accessToken
+    );
 
     if (notifyData.statusCode !== 900) {
       res.status(400).json({
@@ -75,10 +114,7 @@ module.exports = async function handler(req, res) {
       return;
     }
 
-    res.status(200).json({
-      success: true,
-      requestId: notifyData.requestId,
-    });
+    res.status(200).json({ success: true, requestId: notifyData.requestId });
 
   } catch (err) {
     res.status(500).json({ error: err.message });
