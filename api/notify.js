@@ -1,7 +1,11 @@
-export default async function handler(req, res) {
+const PACI_BASE = "https://pcdapi.paci.kw:443/test";
+const PACI_USER = "gis";
+const PACI_PASS = "9#7RnYCtJ$LL";
+
+module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "*");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
   if (req.method === "OPTIONS") {
     return res.status(200).end();
@@ -11,10 +15,6 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const PACI_BASE     = "https://pcdapi.paci.kw:443/test";
-  const PACI_USERNAME = "gis";
-  const PACI_PASSWORD = "9#7RnYCtJ$LL";
-
   try {
     const { civilId, parcel } = req.body;
 
@@ -22,17 +22,12 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "civilId and parcel are required" });
     }
 
-    if (!/^[1234]\d{11}$/.test(civilId)) {
-      return res.status(400).json({ error: "Invalid Civil ID format" });
-    }
-
-    // Step 1: Login
+    // Step 1: Login to PACI
     const loginRes = await fetch(PACI_BASE + "/paci/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: PACI_USERNAME, password: PACI_PASSWORD }),
+      body: JSON.stringify({ username: PACI_USER, password: PACI_PASS }),
     });
-
     const loginData = await loginRes.json();
 
     if (!loginData.accessToken) {
@@ -47,37 +42,36 @@ export default async function handler(req, res) {
         "Authorization": "Bearer " + loginData.accessToken,
       },
       body: JSON.stringify({
-        civilId:                civilId,
-        requestType:            1,
-        assuranceLevel:         20,
-        subjectEn:              "Kuwait Finder - Parcel Access",
-        subjectAr:              "كويت فايندر - الوصول للقطعة",
-        messageEn:              "Approve access to parcel " + parcel,
-        messageAr:              "الموافقة على الوصول للقطعة " + parcel,
+        civilId: civilId,
+        requestType: 1,
+        assuranceLevel: 20,
+        subjectEn: "Kuwait Finder - Parcel Access",
+        subjectAr: "كويت فايندر - الوصول للقطعة",
+        messageEn: "Approve access to parcel " + parcel,
+        messageAr: "الموافقة على الوصول للقطعة " + parcel,
         authenticationReasonEn: "Parcel ownership verification",
         authenticationReasonAr: "التحقق من ملكية القطعة",
-        requestUserDetails:     true,
-        returnedUserDetails:    [1],
-        userDetail:             [0],
+        requestUserDetails: true,
+        returnedUserDetails: [1],
+        userDetail: [0],
       }),
     });
-
     const notifyData = await notifyRes.json();
 
     if (notifyData.statusCode !== 900) {
       return res.status(400).json({
-        error:      "Failed to send notification",
+        error: "PACI notification failed",
         statusCode: notifyData.statusCode,
-        errorCode:  notifyData.errorCode,
+        errorCode: notifyData.errorCode,
       });
     }
 
     return res.status(200).json({
-      success:   true,
+      success: true,
       requestId: notifyData.requestId,
     });
 
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
-}
+};
