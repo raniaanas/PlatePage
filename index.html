@@ -6,85 +6,49 @@
     <title>Kuwait Finder</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
         body {
             font-family: 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #1a3c6e, #2d6a4f);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             padding: 20px;
         }
-
         .card {
-            background: white;
-            border-radius: 20px;
-            padding: 36px 28px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-            text-align: center;
+            background: white; border-radius: 20px; padding: 36px 28px;
+            width: 100%; max-width: 400px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2); text-align: center;
         }
-
         .logo { font-size: 48px; margin-bottom: 8px; }
-
-        .app-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1a3c6e;
-            margin-bottom: 20px;
-        }
-
+        .app-title { font-size: 20px; font-weight: 700; color: #1a3c6e; margin-bottom: 20px; }
         .parcel-label { color: #888; font-size: 13px; margin-bottom: 4px; }
-
         .parcel-number {
-            font-size: 26px;
-            font-weight: 700;
-            color: #1a3c6e;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
-            background: #f0f4ff;
-            padding: 10px 20px;
-            border-radius: 10px;
-            display: inline-block;
+            font-size: 26px; font-weight: 700; color: #1a3c6e;
+            margin-bottom: 20px; letter-spacing: 2px;
+            background: #f0f4ff; padding: 10px 20px;
+            border-radius: 10px; display: inline-block;
         }
-
-        /* Checkbox toggle */
         .auth-toggle {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: #f8f9ff;
-            border: 2px solid #e0e6ff;
-            border-radius: 12px;
-            padding: 14px 16px;
-            margin-bottom: 20px;
-            cursor: pointer;
-            transition: border-color 0.2s, background 0.2s;
-            text-align: left;
+            display: flex; align-items: center; gap: 12px;
+            background: #f8f9ff; border: 2px solid #e0e6ff;
+            border-radius: 12px; padding: 14px 16px;
+            margin-bottom: 20px; cursor: pointer;
+            transition: border-color 0.2s, background 0.2s; text-align: left;
         }
         .auth-toggle:hover { border-color: #1a73e8; background: #f0f4ff; }
         .auth-toggle.active { border-color: #1a3c6e; background: #eef2ff; }
         .auth-toggle input[type="checkbox"] {
-            width: 20px; height: 20px;
-            accent-color: #1a3c6e;
+            width: 20px; height: 20px; accent-color: #1a3c6e;
             cursor: pointer; flex-shrink: 0;
         }
         .auth-toggle .toggle-text { flex: 1; }
         .auth-toggle .toggle-title { font-size: 14px; font-weight: 600; color: #1a3c6e; }
         .auth-toggle .toggle-sub { font-size: 12px; color: #888; margin-top: 2px; }
-
-        /* Civil ID slide-down */
         .civil-section {
-            margin-bottom: 20px;
-            overflow: hidden;
-            max-height: 0;
-            opacity: 0;
+            margin-bottom: 20px; overflow: hidden;
+            max-height: 0; opacity: 0;
             transition: max-height 0.35s ease, opacity 0.3s ease;
         }
         .civil-section.visible { max-height: 160px; opacity: 1; }
-
         .civil-section .field-label {
             color: #555; font-size: 13px; font-weight: 600;
             text-align: left; margin-bottom: 6px;
@@ -98,54 +62,35 @@
         .civil-section input:focus { border-color: #1a73e8; }
         .civil-section input.error { border-color: #e53935; background: #fff5f5; }
         .civil-hint { color: #aaa; font-size: 11px; margin-top: 6px; text-align: center; }
-
         .error-msg { color: #e53935; font-size: 12px; margin-top: 6px; text-align: left; display: none; }
         .error-msg.visible { display: block; }
-
-        /* Main button */
         .main-btn {
-            width: 100%; padding: 15px;
-            background: #1a3c6e; color: white;
-            border: none; border-radius: 12px;
-            font-size: 15px; font-weight: 600; cursor: pointer;
-            transition: opacity 0.2s, transform 0.1s;
-            margin-bottom: 20px;
+            width: 100%; padding: 15px; background: #1a3c6e; color: white;
+            border: none; border-radius: 12px; font-size: 15px; font-weight: 600;
+            cursor: pointer; transition: opacity 0.2s, transform 0.1s; margin-bottom: 20px;
         }
         .main-btn:hover { opacity: 0.88; }
         .main-btn:active { transform: scale(0.98); }
         .main-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        /* Waiting / status box */
         .status-box {
-            background: #f0f4ff;
-            border: 2px solid #c7d7ff;
-            border-radius: 14px;
-            padding: 20px 16px;
-            margin-bottom: 20px;
-            display: none;
+            background: #f0f4ff; border: 2px solid #c7d7ff;
+            border-radius: 14px; padding: 20px 16px;
+            margin-bottom: 20px; display: none;
         }
         .status-box.visible { display: block; }
         .status-icon { font-size: 36px; margin-bottom: 10px; }
         .status-title { font-size: 15px; font-weight: 700; color: #1a3c6e; margin-bottom: 6px; }
         .status-sub { font-size: 13px; color: #666; line-height: 1.5; }
-
-        /* Spinner */
         .spinner {
-            width: 28px; height: 28px;
-            border: 3px solid #d0d7ff;
-            border-top-color: #1a3c6e;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 10px auto 0;
+            width: 28px; height: 28px; border: 3px solid #d0d7ff;
+            border-top-color: #1a3c6e; border-radius: 50%;
+            animation: spin 0.8s linear infinite; margin: 10px auto 0;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* Link buttons */
         .btn {
             display: flex; align-items: center; gap: 14px;
-            padding: 16px 20px; border-radius: 14px;
-            margin-bottom: 14px; font-weight: 600; font-size: 15px;
-            text-decoration: none; color: white;
+            padding: 16px 20px; border-radius: 14px; margin-bottom: 14px;
+            font-weight: 600; font-size: 15px; text-decoration: none; color: white;
             transition: transform 0.15s, opacity 0.15s; cursor: pointer;
         }
         .btn:hover { transform: translateY(-2px); opacity: 0.9; }
@@ -156,27 +101,16 @@
         .btn.kuwait { background: linear-gradient(135deg, #1a73e8, #1558b0); }
         .btn.paci   { background: linear-gradient(135deg, #2d6a4f, #1e4d38); }
         .btn.moi    { background: linear-gradient(135deg, #b5451b, #8c3414); }
-
         .divider {
             display: flex; align-items: center; gap: 10px;
             margin: 4px 0 18px; color: #ccc; font-size: 12px;
         }
         .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #eee; }
-
-        .warn {
-            background: #fff3cd; border: 1px solid #ffc107;
-            border-radius: 10px; padding: 12px 16px;
-            color: #856404; font-size: 13px; margin-bottom: 16px;
-        }
-
         .verified-badge {
             display: inline-flex; align-items: center; gap: 6px;
-            background: #e8f5e9; color: #2e7d32;
-            font-size: 12px; font-weight: 600;
+            background: #e8f5e9; color: #2e7d32; font-size: 12px; font-weight: 600;
             padding: 5px 12px; border-radius: 20px; margin-bottom: 20px;
         }
-
-        /* No parcel in URL */
         .input-section { margin-bottom: 20px; }
         .input-section input {
             width: 100%; padding: 14px 16px; font-size: 18px;
@@ -192,13 +126,11 @@
             cursor: pointer; transition: opacity 0.2s;
         }
         .input-section button:hover { opacity: 0.88; }
-
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(12px); }
             to   { opacity: 1; transform: translateY(0); }
         }
         .animate-in { animation: slideIn 0.3s ease forwards; }
-
         .footer { margin-top: 24px; color: #ccc; font-size: 11px; }
     </style>
 </head>
@@ -215,7 +147,7 @@
         <button onclick="submitParcel()">Continue →</button>
     </div>
 
-    <!-- Gate: parcel + checkbox + optional civil ID -->
+    <!-- Gate -->
     <div id="gate-section" style="display:none;">
         <div class="parcel-label">Parcel Number</div>
         <div class="parcel-number" id="parcel-display-gate">—</div>
@@ -242,7 +174,7 @@
         <button class="main-btn" id="open-btn" onclick="submitGate()">Open Links →</button>
     </div>
 
-    <!-- Waiting for Mobile ID approval -->
+    <!-- Waiting for approval -->
     <div class="status-box" id="status-box">
         <div class="status-icon" id="status-icon">📱</div>
         <div class="status-title" id="status-title">Notification Sent</div>
@@ -252,7 +184,7 @@
         <div class="spinner" id="spinner"></div>
     </div>
 
-    <!-- Links result -->
+    <!-- Links -->
     <div id="main-section" style="display:none;">
         <div class="parcel-label">Parcel Number</div>
         <div class="parcel-number" id="parcel-display">—</div>
@@ -264,8 +196,9 @@
 </div>
 
 <script>
-    // ── IMPORTANT: Replace this with your Cloudflare Worker URL after deploying ──
-    const WORKER_URL = "https://kuwait-finder.YOUR-SUBDOMAIN.workers.dev";
+    // Uses relative URLs — works on both Vercel and GitHub Pages
+    // pointing to Vercel
+    const API_BASE = "https://plate-page-rania994.vercel.app";
 
     const LINK_MAP = {
         KuwaitFinder: {
@@ -284,11 +217,9 @@
 
     const params = new URLSearchParams(window.location.search);
     const parcel = params.get("parcel") || "";
-    let   pollTimer = null;
 
     function isValidCivilId(v) { return /^[1234]\d{11}$/.test(v); }
 
-    // Init
     if (parcel) {
         showGate(parcel);
     } else {
@@ -320,10 +251,8 @@
         const civil   = document.getElementById("civil-section");
         const toggle  = document.getElementById("auth-toggle");
         const checked = cb.checked;
-
         civil.classList.toggle("visible", checked);
         toggle.classList.toggle("active", checked);
-
         if (checked) {
             setTimeout(() => document.getElementById("civil-input").focus(), 150);
         } else {
@@ -343,17 +272,15 @@
     });
 
     async function submitGate() {
-        const checked    = document.getElementById("auth-checkbox").checked;
-        const parcelVal  = window._pendingParcel;
+        const checked   = document.getElementById("auth-checkbox").checked;
+        const parcelVal = window._pendingParcel;
 
         if (!checked) {
-            // No auth — go straight to Kuwait Finder only
             document.getElementById("gate-section").style.display = "none";
             showLinks(parcelVal, null, ["KuwaitFinder"]);
             return;
         }
 
-        // Validate Civil ID
         const civilVal = document.getElementById("civil-input").value.trim();
         const input    = document.getElementById("civil-input");
         const errorMsg = document.getElementById("civil-error");
@@ -368,14 +295,12 @@
         input.classList.remove("error");
         errorMsg.classList.remove("visible");
 
-        // Disable button, show loading
         const btn = document.getElementById("open-btn");
         btn.disabled    = true;
         btn.textContent = "Sending notification…";
 
         try {
-            // Call Worker → sends push notification
-            const res = await fetch(`${WORKER_URL}/auth/notify`, {
+            const res = await fetch(`${API_BASE}/api/notify`, {
                 method:  "POST",
                 headers: { "Content-Type": "application/json" },
                 body:    JSON.stringify({ civilId: civilVal, parcel: parcelVal }),
@@ -384,21 +309,18 @@
             const data = await res.json();
 
             if (!data.success) {
-                showError(data.error || "Failed to send notification. Please try again.");
+                alert("⚠️ " + (data.error || "Failed to send notification. Please try again."));
                 btn.disabled    = false;
                 btn.textContent = "Open Links →";
                 return;
             }
 
-            // Hide gate, show waiting screen
             document.getElementById("gate-section").style.display = "none";
             showWaiting();
-
-            // Start polling for approval
             startPolling(data.requestId, parcelVal, civilVal);
 
         } catch (err) {
-            showError("Network error. Please check your connection and try again.");
+            alert("⚠️ Network error: " + err.message);
             btn.disabled    = false;
             btn.textContent = "Open Links →";
         }
@@ -412,70 +334,47 @@
 
     function startPolling(requestId, parcelVal, civilVal) {
         let attempts = 0;
-        const maxAttempts = 30; // 30 × 3s = 90 seconds timeout
+        const maxAttempts = 30;
 
-        pollTimer = setInterval(async () => {
+        const pollTimer = setInterval(async () => {
             attempts++;
-
             if (attempts > maxAttempts) {
                 clearInterval(pollTimer);
-                setStatusTimeout();
+                setStatus("⏱️", "Request Timed Out",
+                    "No response in 90 seconds. <a href='javascript:location.reload()' style='color:#1a3c6e;font-weight:600;'>Try again</a>");
                 return;
             }
 
             try {
-                const res  = await fetch(`${WORKER_URL}/auth/check?requestId=${requestId}`);
+                const res  = await fetch(`${API_BASE}/api/check?requestId=${requestId}`);
                 const data = await res.json();
 
-                // statusCode 900 = success response from API
                 if (data.statusCode === 900) {
                     const status = (data.requestStatus || "").toLowerCase();
 
                     if (status === "approved" || status === "success" || data.isUsed) {
                         clearInterval(pollTimer);
-                        setStatusApproved();
+                        setStatus("✅", "Approved!", "Identity verified. Loading your links…", false);
                         setTimeout(() => {
                             document.getElementById("status-box").classList.remove("visible");
                             showLinks(parcelVal, civilVal, ["KuwaitFinder", "PACI", "MOI"]);
                         }, 1200);
-                    } else if (status === "rejected" || status === "denied" || status === "cancelled") {
+
+                    } else if (["rejected","denied","cancelled"].includes(status)) {
                         clearInterval(pollTimer);
-                        setStatusRejected();
+                        setStatus("❌", "Request Rejected",
+                            "You rejected the Mobile ID request. <a href='javascript:location.reload()' style='color:#1a3c6e;font-weight:600;'>Try again</a>", false);
                     }
-                    // else still pending — keep polling
                 }
-            } catch (err) {
-                // Network blip — keep trying
-            }
-        }, 3000); // poll every 3 seconds
+            } catch (e) { /* network blip — keep polling */ }
+        }, 3000);
     }
 
-    function setStatusApproved() {
-        document.getElementById("status-icon").textContent  = "✅";
-        document.getElementById("status-title").textContent = "Approved!";
-        document.getElementById("status-sub").textContent   = "Identity verified. Loading your links…";
-        document.getElementById("spinner").style.display    = "none";
-    }
-
-    function setStatusRejected() {
-        document.getElementById("status-icon").textContent  = "❌";
-        document.getElementById("status-title").textContent = "Request Rejected";
-        document.getElementById("status-sub").innerHTML     =
-            "You rejected the Mobile ID request.<br><a href='javascript:location.reload()' style='color:#1a3c6e;font-weight:600;'>Try again</a>";
-        document.getElementById("spinner").style.display    = "none";
-    }
-
-    function setStatusTimeout() {
-        document.getElementById("status-icon").textContent  = "⏱️";
-        document.getElementById("status-title").textContent = "Request Timed Out";
-        document.getElementById("status-sub").innerHTML     =
-            "No response received within 90 seconds.<br><a href='javascript:location.reload()' style='color:#1a3c6e;font-weight:600;'>Try again</a>";
-        document.getElementById("spinner").style.display    = "none";
-    }
-
-    function showError(message) {
-        document.getElementById("status-box").classList.remove("visible");
-        alert("⚠️ " + message);
+    function setStatus(icon, title, sub, showSpinner = true) {
+        document.getElementById("status-icon").textContent  = icon;
+        document.getElementById("status-title").textContent = title;
+        document.getElementById("status-sub").innerHTML     = sub;
+        document.getElementById("spinner").style.display    = showSpinner ? "block" : "none";
     }
 
     function showLinks(parcelValue, civilVal, linksToShow) {
